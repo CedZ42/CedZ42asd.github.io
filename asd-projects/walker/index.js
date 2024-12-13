@@ -81,10 +81,10 @@ function runProgram(){
       walker2.speedY = -5;
     }
     if (event.which === KEY.S){
-      walker2.speedX = 5;
+      walker2.speedY = 5;
     }
     if (event.which === KEY.D){
-      walker2.speedY = 5;
+      walker2.speedX = 5;
     }
     
   }
