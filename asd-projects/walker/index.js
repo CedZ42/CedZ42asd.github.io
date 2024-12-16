@@ -43,6 +43,7 @@ function runProgram(){
   var interval = setInterval(newFrame, FRAMES_PER_SECOND_INTERVAL);   // execute newFrame every 0.0166 seconds (60 Frames per second)
   $(document).on('keydown', handleKeyDown);                           // change 'eventType' to the type of event you want to handle
   $(document).on('keyup', handleKeyUp);
+  $(document).on('click', changeColor);
 
   ////////////////////////////////////////////////////////////////////////////////
   ///////////////////////// CORE LOGIC ///////////////////////////////////////////
@@ -110,28 +111,16 @@ function runProgram(){
   ////////////////////////////////////////////////////////////////////////////////
 
   function wallCollision(){
-    if (walker.xPos === BOARD_WIDTH - WALKER_WIDTH){
+    if (walker.xPos > BOARD_WIDTH - WALKER_WIDTH || walker.xPos < 0){
       walker.xPos -= walker.speedX;
     }
-    if (walker.xPos === 0){
-      walker.xPos -= walker.speedX ;
-    }
-    if (walker.yPos === BOARD_HEIGHT - WALKER_HEIGHT){
+    if (walker.yPos > BOARD_HEIGHT - WALKER_HEIGHT || walker.yPos < 0){
       walker.yPos -= walker.speedY;
     }
-    if (walker.yPos === 0 - WALKER_HEIGHT + WALKER_HEIGHT){
-      walker.yPos -= walker.speedY;
-    }
-    if (walker2.xPos === BOARD_WIDTH - WALKER_WIDTH){
+    if (walker2.xPos > BOARD_WIDTH - WALKER_WIDTH || walker2.xPos < 0){
       walker2.xPos -= walker2.speedX;
     }
-    if (walker2.xPos === 0){
-      walker2.xPos -= walker2.speedX ;
-    }
-    if (walker2.yPos === BOARD_HEIGHT - WALKER_HEIGHT){
-      walker2.yPos -= walker2.speedY;
-    }
-    if (walker2.yPos === 0 - WALKER_HEIGHT + WALKER_HEIGHT){
+    if (walker2.yPos > BOARD_HEIGHT - WALKER_HEIGHT || walker2.yPos < 0){
       walker2.yPos -= walker2.speedY;
     }
   }
@@ -148,6 +137,13 @@ function runProgram(){
     $("#walker").css("top", walker.yPos);
     $("#walker2").css("left", walker2.xPos);
     $("#walker2").css("top", walker2.yPos);
+  }
+
+  function changeColor (){
+    var walkerColor = $("#walker").css("background-color")
+    var walker2Color = $("#walker2").css("background-color")
+    $("#walker").css("background-color", walker2Color)
+    $("#walker2").css("background-color", walkerColor)
   }
 
 
