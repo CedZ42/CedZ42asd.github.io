@@ -30,20 +30,23 @@ function runProgram(){
     xPos: 0,
     yPos: 0,
     speedX: 0,
-    speedY: 0
+    speedY: 0,
+    width: $("#walker").width(),
+    height: $("#walker").height()
   }
   var walker2 = {
     xPos: BOARD_WIDTH - WALKER_WIDTH,
     yPos: BOARD_HEIGHT - WALKER_HEIGHT,
     speedX: 0,
-    speedY: 0
+    speedY: 0,
+    width: $("#walker2").width(),
+    height: $("#walker2").height()
   }
 
   // one-time setup
   var interval = setInterval(newFrame, FRAMES_PER_SECOND_INTERVAL);   // execute newFrame every 0.0166 seconds (60 Frames per second)
   $(document).on('keydown', handleKeyDown);                           // change 'eventType' to the type of event you want to handle
   $(document).on('keyup', handleKeyUp);
-  $(document).on('click', changeColor);
 
   ////////////////////////////////////////////////////////////////////////////////
   ///////////////////////// CORE LOGIC ///////////////////////////////////////////
@@ -57,6 +60,7 @@ function runProgram(){
     repositionGameItem();
     wallCollision();
     redrawGameItem();
+    handleCollision();
   }
   
   /* 
@@ -110,6 +114,45 @@ function runProgram(){
   ////////////////////////// HELPER FUNCTIONS ////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////
 
+  function handleCollision(){
+    if (doCollide(walker, walker2)){
+      walker.xPos = 0;
+      walker.yPos = 0;
+      walker2.xPos = BOARD_WIDTH - WALKER_WIDTH;
+      walker2.yPos = BOARD_HEIGHT - WALKER_HEIGHT;
+      changeColor();
+    }
+  }
+
+
+  function doCollide(obj1, obj2){
+    obj1.leftX = obj1.xPos;
+    obj1.topY = obj1.yPos;
+    obj1.rightX = obj1.xPos + obj1.width;
+    obj1.bottomY = obj1.yPos + obj1.height;
+    
+    // TODO: Do the same for walker2
+    obj2.leftX = obj2.xPos;
+    obj2.topY = obj2.yPos;
+    obj2.rightX = obj2.xPos + obj2.width;
+    obj2.bottomY = obj2.yPos + obj2.height;
+
+    // TODO: Return true if they are overlapping, false otherwise
+	if (
+      obj2.rightX > obj1.leftX && 
+      obj2.leftX < obj1.rightX &&
+      obj2.bottomY > obj1.topY && 
+      obj2.topY < obj1.bottomY
+    
+    ){
+      return true;
+    } 
+    else {
+      return false
+    }
+		
+}
+  
   function wallCollision(){
     if (walker.xPos > BOARD_WIDTH - WALKER_WIDTH || walker.xPos < 0){
       walker.xPos -= walker.speedX;
